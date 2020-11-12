@@ -14,7 +14,7 @@ const SUPPORTED_COMPILERS = {
   external: require("@truffle/external-compile").Compile
 };
 
-const {Project} = require("@truffle/db");
+const {connect, Project} = require("@truffle/db");
 
 async function compile(config) {
   // determine compiler(s) to use
@@ -113,6 +113,7 @@ const WorkflowCompile = {
     await config.artifactor.saveAll(artifacts);
 
     if (options.db && options.db.enabled === true && contracts.length > 0) {
+      const db = connect(config);
       const project = await Project.initialize({
         db,
         project: {
